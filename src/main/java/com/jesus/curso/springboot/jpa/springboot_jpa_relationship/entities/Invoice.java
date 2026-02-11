@@ -20,8 +20,8 @@ public class Invoice {
     private String description;
     private Long total;
 
-    @ManyToOne
     //@JoinColumn(name = "id_cliente_temp")
+    @ManyToOne
     private Client client;
     
     public Invoice() {
