@@ -25,7 +25,7 @@ public class Client {
     private String lastname;
 
     //@JoinColumn(name = "client_id")
-    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(cascade = CascadeType.ALL)
     @JoinTable(
         name = "tbl_clientes_to_direcciones", 
         joinColumns = @JoinColumn(name = "id_cliente"),
