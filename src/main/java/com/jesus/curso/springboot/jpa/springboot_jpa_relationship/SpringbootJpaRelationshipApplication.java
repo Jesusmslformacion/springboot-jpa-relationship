@@ -1,5 +1,6 @@
 package com.jesus.curso.springboot.jpa.springboot_jpa_relationship;
 
+import java.util.Arrays;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -8,6 +9,7 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.jesus.curso.springboot.jpa.springboot_jpa_relationship.entities.Address;
 import com.jesus.curso.springboot.jpa.springboot_jpa_relationship.entities.Client;
 import com.jesus.curso.springboot.jpa.springboot_jpa_relationship.entities.Invoice;
 import com.jesus.curso.springboot.jpa.springboot_jpa_relationship.repositories.ClientRepository;
@@ -28,7 +30,40 @@ public class SpringbootJpaRelationshipApplication implements CommandLineRunner{
 
 	@Override
 	public void run(String... args) throws Exception {
-		manyToOneFindIdClient();
+		oneToManyFindById();
+	}
+
+	@Transactional
+	public void oneToManyFindById() {
+		Optional<Client>optionalClient = clientRepository.findById(2L);
+		optionalClient.ifPresent(client -> {
+
+			Address address1 = new Address("El verjel", 1234);
+			Address address2 = new Address("Vasco de Gama ", 9876);
+	
+			client.setAddresses(Arrays.asList(address1,address2));
+
+			clientRepository.save(client);
+	
+			System.out.println(client);
+		});
+		
+
+	}
+
+	@Transactional
+	public void oneToMany() {
+		Client client = new Client("Fran", "Moras");
+
+		Address address1 = new Address("El verjel", 1234);
+		Address address2 = new Address("Vasco de Gama ", 9876);
+
+		client.getAddresses().add(address1);
+		client.getAddresses().add(address2);
+
+		clientRepository.save(client);
+
+		System.out.println(client);
 	}
 
 	@Transactional
