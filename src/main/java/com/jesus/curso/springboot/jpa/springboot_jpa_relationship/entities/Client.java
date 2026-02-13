@@ -32,9 +32,13 @@ public class Client {
         inverseJoinColumns = @JoinColumn(name = "id_direcciones"),
         uniqueConstraints = @UniqueConstraint(columnNames = {"id_direcciones"}))
     private List<Address> addresses;
+
+    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true, mappedBy = "client")
+    private List<Invoice> invoices;
     
     public Client() {
         addresses = new ArrayList<>();
+        invoices = new ArrayList<>();
     }
     
     public Client(String name, String lastname) {
@@ -70,13 +74,22 @@ public class Client {
         this.addresses = addresses;
     }
     
+    public List<Invoice> getInvoices() {
+        return invoices;
+    }
+
+    public void setInvoices(List<Invoice> invoices) {
+        this.invoices = invoices;
+    }
     @Override
     public String toString() {
-        return "{id=" + id 
-        + ", name=" + name 
-        + ", lastname=" + lastname 
-        + ", addresses=" + addresses + "}";
+        return "{id=" + id + 
+        ", name=" + name + 
+        ", lastname=" + lastname + 
+        ", invoices=" + invoices +
+        ", addresses=" + addresses + "}";
     }
+
 
 
     
