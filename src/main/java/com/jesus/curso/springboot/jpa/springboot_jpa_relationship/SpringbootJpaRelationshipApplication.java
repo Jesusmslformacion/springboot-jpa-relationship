@@ -13,7 +13,9 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.jesus.curso.springboot.jpa.springboot_jpa_relationship.entities.Address;
 import com.jesus.curso.springboot.jpa.springboot_jpa_relationship.entities.Client;
+import com.jesus.curso.springboot.jpa.springboot_jpa_relationship.entities.ClientDetails;
 import com.jesus.curso.springboot.jpa.springboot_jpa_relationship.entities.Invoice;
+import com.jesus.curso.springboot.jpa.springboot_jpa_relationship.repositories.ClientDetailsRepository;
 import com.jesus.curso.springboot.jpa.springboot_jpa_relationship.repositories.ClientRepository;
 import com.jesus.curso.springboot.jpa.springboot_jpa_relationship.repositories.InvoiceRepository;
 
@@ -26,13 +28,47 @@ public class SpringbootJpaRelationshipApplication implements CommandLineRunner{
 	@Autowired
 	private InvoiceRepository invoiceRepository;
 
+	@Autowired
+	private ClientDetailsRepository clientDetailsRepository;
+
 	public static void main(String[] args) {
 		SpringApplication.run(SpringbootJpaRelationshipApplication.class, args);
 	}
 
 	@Override
 	public void run(String... args) throws Exception {
-		removeInvoiceBidireccional();
+		onetoOneFindById();
+	}
+
+	@Transactional
+	public void onetoOneFindById() {
+		ClientDetails clientDetails = new ClientDetails(true, 5000);
+		clientDetailsRepository.save(clientDetails);
+
+		Optional<Client> clientOptional = clientRepository.findById(2L);//new Client("Erba", "Pura");
+		clientOptional.ifPresent(client -> {
+
+			client.setClientDetails(clientDetails);
+			clientRepository.save(client);
+			
+			System.out.println(client);
+		});
+			
+
+	}
+
+	@Transactional
+	public void onetoOne() {
+		ClientDetails clientDetails = new ClientDetails(true, 5000);
+		clientDetailsRepository.save(clientDetails);
+
+		Client client = new Client("Erba", "Pura");
+		client.setClientDetails(clientDetails);
+		clientRepository.save(client);
+
+		System.out.println(client);
+
+
 	}
 
 
@@ -52,7 +88,7 @@ public class SpringbootJpaRelationshipApplication implements CommandLineRunner{
 			System.out.println(client);
 		
 
-		Optional<Client> optionalClientDb = clientRepository.findOne(1L);
+		Optional<Client> optionalClientDb = clientRepository.findOne(3L);
 
 		optionalClientDb.ifPresent(clientDb -> {
 			Invoice invoice3 = new Invoice("Compras de la casa", 5000L);
