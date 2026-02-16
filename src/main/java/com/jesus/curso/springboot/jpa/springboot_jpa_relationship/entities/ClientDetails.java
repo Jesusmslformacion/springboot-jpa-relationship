@@ -4,6 +4,8 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
 
 @Entity
@@ -17,7 +19,9 @@ public class ClientDetails {
     private boolean premium;
     private Integer points;
     
-
+    @OneToOne
+    @JoinColumn(name = "id_cliente_detalle")
+    private Client client;
 
     public ClientDetails() {
     }
@@ -46,6 +50,13 @@ public class ClientDetails {
         this.points = points;
     }
 
+    public Client getClient() {
+        return client;
+    }
+
+    public void setClient(Client client) {
+        this.client = client;
+    }
 
     @Override
     public String toString() {
@@ -53,6 +64,7 @@ public class ClientDetails {
                 ", premium=" + premium 
                 + ", points=" + points + "}";
     }
+
 
 
     

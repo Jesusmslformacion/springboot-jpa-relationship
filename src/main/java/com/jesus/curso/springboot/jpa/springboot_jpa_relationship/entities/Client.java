@@ -7,6 +7,7 @@ import java.util.Set;
 
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -39,7 +40,7 @@ public class Client {
     @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true, mappedBy = "client")
     private Set<Invoice> invoices;
 
-    @OneToOne
+    @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true, mappedBy = "client")
     private ClientDetails clientDetails;
 
     public Client() {
@@ -104,7 +105,14 @@ public class Client {
 
     public void setClientDetails(ClientDetails clientDetails) {
         this.clientDetails = clientDetails;
+        		clientDetails.setClient(this);
     }
+
+        public void removeClientDetails(ClientDetails clientDetails) {
+        clientDetails.setClient(null);
+            this.clientDetails = null;
+    }
+
     @Override
     public String toString() {
         return "{id=" + id + 
