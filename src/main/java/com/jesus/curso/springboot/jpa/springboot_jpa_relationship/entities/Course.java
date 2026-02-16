@@ -1,9 +1,13 @@
 package com.jesus.curso.springboot.jpa.springboot_jpa_relationship.entities;
 
+import java.util.HashSet;
+import java.util.Set;
+
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.ManyToMany;
 import jakarta.persistence.Table;
 
 @Entity
@@ -18,13 +22,20 @@ public class Course {
 
     private String instructor;
 
+    @ManyToMany(mappedBy = "courses")
+    private Set<Student> students;
+
     public Course() {
+        this.students = new HashSet<>();
     }
 
     public Course(String name, String instructor) {
+        this();
         this.name = name;
         this.instructor = instructor;
     }
+
+    
 
     public Long getId() {
         return id;
@@ -49,6 +60,15 @@ public class Course {
     public void setInstructor(String instructor) {
         this.instructor = instructor;
     }
+
+    public Set<Student> getStudents() {
+        return students;
+    }
+
+    public void setStudents(Set<Student> students) {
+        this.students = students;
+    }
+
 
     @Override
     public String toString() {
@@ -92,6 +112,7 @@ public class Course {
         return true;
     }
 
+    
     
     
     
